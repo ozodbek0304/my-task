@@ -1,4 +1,4 @@
-import DashboardPage from "@/app/dashboard/page";
+import DashboardPage from "@/components/dashboard/page";
 import PageContainer from "@/components/layout/PageContainer";
 import { useMemo } from "react";
 

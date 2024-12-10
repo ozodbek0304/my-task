@@ -1,14 +1,18 @@
 import DashboardPage from "@/components/dashboard/page";
 import PageContainer from "@/components/layout/PageContainer";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import LoginForm from "./login";
 
 export default function Home() {
+  const [token, setToken] = useState(false);
 
   const memoValue = useMemo(() => {
-    return (
-      <DashboardPage />
-    )
-  }, [])
+    if (token) {
+      return <DashboardPage />;
+    } else {
+      return <LoginForm setToken={setToken} />;
+    }
+  }, [token]);
 
   return (
     <PageContainer>

@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { useRouter } from "next/navigation"
+
 
 
 const formSchema = z.object({
@@ -30,8 +30,11 @@ const formSchema = z.object({
     rememberMe: z.boolean().default(false),
 })
 
-export default function LoginForm() {
-    const router = useRouter();
+interface Props {
+    setToken: (value: boolean) => void;
+}
+
+export default function LoginForm({ setToken }: Props) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -43,13 +46,9 @@ export default function LoginForm() {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         if (values?.email === "ozodbek@gmail.com" && values?.password === "1") {
-            router.push("/");
-        } else {
-            router.push("/login");
+            setToken(true);
         }
     }
-
-
 
 
     return (
@@ -149,6 +148,8 @@ export default function LoginForm() {
             </Card>
 
         </div>
-    )
+    );
+
+
 }
 

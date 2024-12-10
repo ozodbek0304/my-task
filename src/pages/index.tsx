@@ -1,7 +1,7 @@
 import DashboardPage from "@/components/dashboard/page";
 import PageContainer from "@/components/layout/PageContainer";
 import { useMemo, useState } from "react";
-import LoginForm from "./login";
+import LoginForm from "../components/login";
 
 export default function Home() {
   const [token, setToken] = useState(false);

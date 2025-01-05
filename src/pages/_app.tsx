@@ -5,7 +5,16 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from 'next-themes';
 import '../styles/globals.css';
 
-const queryClient = new QueryClient();
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: process.env.NODE_ENV  === "development" ? 0 : 3,
+      refetchOnMount: false,
+    },
+  },
+})
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

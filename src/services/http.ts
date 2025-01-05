@@ -14,7 +14,7 @@ import {
 } from "@tanstack/react-query"
 import { AxiosRequestConfig } from "axios"
 import { axiosInstance } from "./api"
-import { onError } from "./onError"
+import { onError } from "@/lib/onError"
 
 type ICustomUseQueryOptions<TQueryFnData, TError, TData> = Partial<
     UseQueryOptions<TQueryFnData, TError, TData>

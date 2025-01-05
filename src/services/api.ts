@@ -1,3 +1,4 @@
+import { getAccessToken } from '@/lib/get-token';
 import axios from 'axios';
 
 export const baseURL = process.env.NEXT_PUBLIC_REST_API_ENDPOINT;
@@ -10,7 +11,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = getAccessToken()
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

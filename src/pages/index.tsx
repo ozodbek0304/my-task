@@ -1,11 +1,18 @@
-import React from 'react'
+import SectionsFirst from "@/components/home-pages/section-first";
+import PageContainer from "@/components/layouts/layout";
+import { useMemo } from "react";
 
-type Props = {}
+export default function Home() {
 
-const Home = (props: Props) => {
+  const memoValue = useMemo(() => {
+    return (
+      <SectionsFirst />
+    )
+  }, [])
+
   return (
-    <div>Hello Word</div>
-  )
+    <PageContainer>
+      {memoValue}
+    </PageContainer>
+  );
 }
-
-export default Home

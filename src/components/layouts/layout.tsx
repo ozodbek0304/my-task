@@ -1,7 +1,33 @@
-import { cn } from "@/lib/utils"
+import Head from 'next/head';
+import React from 'react'
+import Header from '../header';
 
-type Props = { children: React.ReactNode; className?: string }
-
-export default function Layout({ children, className }: Props) {
-    return <main className={cn(`p-4`, className)}>{children}</main>
+type Props = {
+    header?: React.ReactNode;
+    footer?: React.ReactNode;
+    children: React.ReactNode;
+    title?: string;
 }
+
+const PageContainer: React.FC<Props> = (
+    {
+        header = <Header />,
+        footer = <p>Footer</p>,
+        children,
+        title
+
+    }: Props) => {
+    return (
+        <div>
+            <Head>
+                <title>Barcha elektron documentlar bazasi </title>
+                <meta property="og:title" content={title} />
+            </Head>
+            {header}
+            {children}
+            {footer}
+        </div>
+    )
+}
+
+export default PageContainer

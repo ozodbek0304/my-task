@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import { useRouter, useSearchParams } from "next/navigation"
 import AnimatedTabs from "../custom/tabs"
 
 interface ParamTabsProps {
@@ -26,11 +26,8 @@ const ParamAnimatedTabs: React.FC<ParamTabsProps> = ({
     returnValue = "id",
     onValueChange,
 }) => {
-    const navigate = useNavigate()
-    const search: any = useSearch({ from: "__root__" }) as Record<
-        string,
-        string | undefined
-    >
+    const navigate = useRouter()
+    const search: any = useSearchParams()
     const currentTab = search[paramName] || options[0]?.[returnValue]
 
     const handleTabChange = (tab: string | number) => {
@@ -40,8 +37,8 @@ const ParamAnimatedTabs: React.FC<ParamTabsProps> = ({
         } else {
             if (disabled || tab === currentTab) return
             cleanOthers ?
-                navigate({ search: { [paramName]: tab } as any })
-            :   navigate({ search: { ...search, [paramName]: tab } as any })
+                navigate.push({ search: { [paramName]: tab } as any })
+                : navigate.push({ search: { ...search, [paramName]: tab } as any })
         }
     }
 

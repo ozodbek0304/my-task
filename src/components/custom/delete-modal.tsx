@@ -1,7 +1,5 @@
 import { useModal } from "@/hooks/use-modal"
-import { useDelete } from "@/services/default-requests"
 import { useQueryClient } from "@tanstack/react-query"
-import { ReactNode } from "@tanstack/react-router"
 import { Button } from "../ui/button"
 import {
     DialogDescription,
@@ -10,11 +8,12 @@ import {
     DialogTitle,
 } from "../ui/dialog"
 import Modal from "./modal"
+import { useDelete } from "@/services/http"
 
 interface IProps {
     path: string
     id: string | number
-    name?: ReactNode
+    name?: string | number | undefined
     onSuccessAction?: () => void
     modalKey?: string
     refetch?: boolean

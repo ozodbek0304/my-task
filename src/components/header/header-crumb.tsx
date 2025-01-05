@@ -9,7 +9,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { cn } from "@/lib/utils"
-import { Link } from "@tanstack/react-router"
+import Link from "next/link"
 
 type Props = {
     links: HeaderCrumbLink[]
@@ -26,7 +26,7 @@ export function HeaderCrumb({ links }: Props) {
                                 asChild
                                 className="max-w-20 truncate"
                             >
-                                <Link href={item.to}>{item.label}</Link>
+                                <Link href={`${item.to}`}>{item.label}</Link>
                             </BreadcrumbLink>
                             <BreadcrumbSeparator />
                         </BreadcrumbItem>

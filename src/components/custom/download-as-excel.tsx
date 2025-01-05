@@ -1,8 +1,8 @@
 import { downloadExcel } from "@/lib/download-excel"
 import { onError } from "@/lib/onError"
-import { useGet } from "@/services/default-requests"
 import { Download } from "lucide-react"
 import { Button } from "../ui/button"
+import { useGet } from "@/services/http"
 
 const DownloadAsExcel = ({ url, name }: { url: string; name: string }) => {
     const { refetch, isFetching } = useGet(url, {

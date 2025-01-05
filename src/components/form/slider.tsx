@@ -57,7 +57,7 @@ export default function FormSlider<IForm extends FieldValues>({
                             max={max}
                             step={step}
                             value={[field.value || min]}
-                            onValueChange={(val) => field.onChange(val?.[0])}
+                            onValueChange={(val: any) => field.onChange(val?.[0])}
                             disabled={disabled}
                         />
                     </div>

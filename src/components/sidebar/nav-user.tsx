@@ -15,10 +15,10 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { useNavigate } from "@tanstack/react-router"
+import { useRouter } from "next/navigation"
 
 export function NavUser() {
-    const navigate = useNavigate()
+    const navigate = useRouter()
     const { isMobile } = useSidebar()
 
     return (
@@ -85,8 +85,7 @@ export function NavUser() {
 
                         <DropdownMenuItem
                             onClick={() => {
-                                navigate({ to: "/login" })
-                                // localStorage.removeItem(USER_ACCESS_KEY)
+                                navigate.push("/login")
                             }}
                         >
                             <LogOut />

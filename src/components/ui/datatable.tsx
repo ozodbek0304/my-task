@@ -23,13 +23,13 @@ import {
 } from "@/components/ui/table"
 import { usePersist } from "@/hooks/use-persist"
 import { cn } from "@/lib/utils"
-import { useLocation, useSearch } from "@tanstack/react-router"
 import { ArrowDown, ArrowUp, Settings } from "lucide-react"
 import TableActions from "../custom/table-actions"
 import CursorPagination from "../param/cursor-pagination"
 import ParamPagination, { PaginationProps } from "../param/pagination"
 import Loader from "./loader"
 import MultiSelect from "./multi-select"
+import { useRouter } from "next/router"
 
 interface CursorPaginationProps {
     next: string | null | undefined
@@ -100,12 +100,12 @@ export function DataTable<TData extends object>({
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnVisibility1, setColumnVisibility1] =
         React.useState<VisibilityState>({})
-    const pathname = useLocation().pathname
+    const router = useRouter();
+    const { pathname, query } = router;
     const { store: columnVisibility, setStore: setColumnVisibility } =
         usePersist<VisibilityState>(pathname)
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const search: any = useSearch({ from: "__root__" })
 
     React.useEffect(() => {
         setColumnVisibility(columnVisibility1)
@@ -152,13 +152,13 @@ export function DataTable<TData extends object>({
             columnVisibility,
             pagination: {
                 pageIndex:
-                    search[paramName || "local_page"] ?
-                        +search[paramName || "local_page"] - 1
-                    :   0,
+                    query[paramName || "local_page"] ?
+                        +query[paramName || "local_page"] - 1
+                        : 0,
                 pageSize:
-                    search[pageSizeParamName || "local_page_size"] ?
-                        +search[pageSizeParamName || "local_page_size"]
-                    :   pageSize || 10,
+                    query[pageSizeParamName || "local_page_size"] ?
+                        +query[pageSizeParamName || "local_page_size"]
+                        : pageSize || 10,
             },
         },
         manualPagination: !!totalPages || !!next || viewAll,
@@ -188,41 +188,41 @@ export function DataTable<TData extends object>({
                                             className={
                                                 header.column.id === "action" ?
                                                     "!w-20"
-                                                :   `!w-[${header.column.getSize()}px]`
+                                                    : `!w-[${header.column.getSize()}px]`
                                             }
                                         >
                                             {header.isPlaceholder ?
                                                 null
-                                            : header.column.getCanSort() ?
-                                                <div
-                                                    onClick={header.column.getToggleSortingHandler()}
-                                                    className="cursor-pointer flex items-center gap-1 select-none w-max"
-                                                >
-                                                    {flexRender(
+                                                : header.column.getCanSort() ?
+                                                    <div
+                                                        onClick={header.column.getToggleSortingHandler()}
+                                                        className="cursor-pointer flex items-center gap-1 select-none w-max"
+                                                    >
+                                                        {flexRender(
+                                                            header.column.columnDef
+                                                                .header,
+                                                            header.getContext(),
+                                                        )}
+                                                        {{
+                                                            asc: (
+                                                                <ArrowUp
+                                                                    width={18}
+                                                                />
+                                                            ),
+                                                            desc: (
+                                                                <ArrowDown
+                                                                    width={18}
+                                                                />
+                                                            ),
+                                                        }[
+                                                            header.column.getIsSorted() as string
+                                                        ] ?? null}
+                                                    </div>
+                                                    : flexRender(
                                                         header.column.columnDef
                                                             .header,
                                                         header.getContext(),
-                                                    )}
-                                                    {{
-                                                        asc: (
-                                                            <ArrowUp
-                                                                width={18}
-                                                            />
-                                                        ),
-                                                        desc: (
-                                                            <ArrowDown
-                                                                width={18}
-                                                            />
-                                                        ),
-                                                    }[
-                                                        header.column.getIsSorted() as string
-                                                    ] ?? null}
-                                                </div>
-                                            :   flexRender(
-                                                    header.column.columnDef
-                                                        .header,
-                                                    header.getContext(),
-                                                )
+                                                    )
                                             }
                                         </TableHead>
                                     ))}
@@ -264,7 +264,7 @@ export function DataTable<TData extends object>({
                                         `hover:bg-secondary/50`,
                                         setRowClassName ?
                                             setRowClassName(row.original)
-                                        :   "",
+                                            : "",
                                     )}
                                 >
                                     {row.getVisibleCells().map((cell) => (
@@ -277,12 +277,12 @@ export function DataTable<TData extends object>({
                                             className={cn(
                                                 onRowClick && "cursor-pointer",
                                                 notClick(cell.column.id) &&
-                                                    "cursor-default",
+                                                "cursor-default",
                                                 setCellClassName ?
                                                     setCellClassName(
                                                         row.original,
                                                     )
-                                                :   "",
+                                                    : "",
                                                 // cell.column.id === "action" ?
                                                 //     "p-0 flex justify-end"
                                                 // :   "",
@@ -296,7 +296,7 @@ export function DataTable<TData extends object>({
                                     ))}
                                 </TableRow>
                             ))
-                        :   <TableRow>
+                            : <TableRow>
                                 <TableCell
                                     colSpan={columns?.length}
                                     className="h-24 text-center"
@@ -319,24 +319,24 @@ export function DataTable<TData extends object>({
                             pageSize={pageSize}
                             pageSizeParamName={pageSizeParamName}
                         />
-                    : next || prev ?
-                        <CursorPagination
-                            next={next}
-                            previous={prev}
-                            disabled={disabled || loading}
-                            changePageSize={cursorChangePageSize}
-                            paramName={paramName}
-                            pageSizeParamName={pageSizeParamName}
-                        />
-                    :   <ParamPagination
-                            disabled={disabled || loading}
-                            totalPages={table.getPageCount()}
-                            pageSize={table.getState().pagination.pageSize}
-                            paramName={paramName || "local_page"}
-                            pageSizeParamName={
-                                pageSizeParamName || "local_page_size"
-                            }
-                        />
+                        : next || prev ?
+                            <CursorPagination
+                                next={next}
+                                previous={prev}
+                                disabled={disabled || loading}
+                                changePageSize={cursorChangePageSize}
+                                paramName={paramName}
+                                pageSizeParamName={pageSizeParamName}
+                            />
+                            : <ParamPagination
+                                disabled={disabled || loading}
+                                totalPages={table.getPageCount()}
+                                pageSize={table.getState().pagination.pageSize}
+                                paramName={paramName || "local_page"}
+                                pageSizeParamName={
+                                    pageSizeParamName || "local_page_size"
+                                }
+                            />
                     }
                 </div>
             )}

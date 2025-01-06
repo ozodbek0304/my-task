@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React from 'react'
-import { Button } from '../ui/button'
 import { useTheme } from 'next-themes';
 import FullScreenToggle from './full-screen';
 import ThemeButton from './theme-button';

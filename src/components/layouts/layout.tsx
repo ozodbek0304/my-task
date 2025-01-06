@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react'
 import Header from '../header';
+import Footer from '../footer/page';
 
 type Props = {
     header?: React.ReactNode;
@@ -12,7 +13,7 @@ type Props = {
 const PageContainer: React.FC<Props> = (
     {
         header = <Header />,
-        footer = <></>,
+        footer = <Footer/>,
         children,
         title
 

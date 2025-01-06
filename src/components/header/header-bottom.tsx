@@ -9,8 +9,8 @@ const HeaderBottom = () => {
         <Card className='rounded-none py-6 flex items-center  mb-5'>
             <nav className='flex justify-between h-full items-center gap-5 container'>
                 <div className='flex items-center gap-3'>
-                    <Button>Logotip</Button>
-                    <Button>Kategoriyalar</Button>
+                    <Button className='bg-primary'>Logotip</Button>
+                    <Button className='bg-primary'>Kategoriyalar</Button>
                 </div>
                 <div className='flex-1 w-full'>
                     <ParamInput className="w-full" fullWidth />

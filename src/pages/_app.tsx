@@ -10,7 +10,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: process.env.NODE_ENV  === "development" ? 0 : 3,
+      retry: process.env.NODE_ENV === "development" ? 0 : 3,
       refetchOnMount: false,
     },
   },
@@ -18,7 +18,7 @@ export const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider attribute="class">
+    <ThemeProvider attribute="class" defaultTheme="system">
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
         <Toaster />

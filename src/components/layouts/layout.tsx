@@ -12,7 +12,7 @@ type Props = {
 const PageContainer: React.FC<Props> = (
     {
         header = <Header />,
-        footer = <p>Footer</p>,
+        footer = <></>,
         children,
         title
 

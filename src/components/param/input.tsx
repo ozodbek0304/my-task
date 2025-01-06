@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { ClassNameValue } from "tailwind-merge"
 import { Input } from "../ui/input"
@@ -11,8 +10,8 @@ export default function ParamInput({
     placeholder = "Qidiruv",
 }: ParamInputProps) {
     const inputRef = useRef<HTMLInputElement>(null)
-    const navigate = useNavigate()
-    const params: any = useSearch({ from: "__root__" })
+    const router: any = useRouter()
+    const { query } = router
 
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -24,21 +23,18 @@ export default function ParamInput({
         }
         debounceTimeoutRef.current = setTimeout(() => {
             if (newSearchTerm) {
-                navigate({
-                    search:
-                        clearOthers ?
-                            ({
-                                q: newSearchTerm,
-                                search: params?.search,
-                            } as any)
-                        :   {
-                                ...params,
-                                q: newSearchTerm,
-                            },
+                const updatedQuery = clearOthers
+                    ? { q: newSearchTerm, search: query.search }
+                    : { ...query, q: newSearchTerm }
+
+                router.push({
+                    pathname: router.pathname,
+                    query: updatedQuery,
                 })
             } else {
-                navigate({
-                    search: { ...params, q: undefined, search: undefined },
+                router.push({
+                    pathname: router.pathname,
+                    query: { ...query, q: undefined, search: undefined },
                 })
             }
         }, 300)
@@ -48,51 +44,45 @@ export default function ParamInput({
         if (e.key === "Enter") {
             const searchValue = inputRef.current?.value
             if (searchValue) {
-                navigate({
-                    search:
-                        clearOthers ?
-                            ({
-                                search: searchValue,
-                                q: searchValue,
-                            } as any)
-                        :   {
-                                ...params,
-                                search: searchValue,
-                                q: searchValue,
-                            },
+                const updatedQuery = clearOthers
+                    ? { search: searchValue, q: searchValue }
+                    : { ...query, search: searchValue, q: searchValue }
+
+                router.push({
+                    pathname: router.pathname,
+                    query: updatedQuery,
                 })
             } else {
-                navigate({
-                    search: { ...params, q: undefined, search: undefined },
+                router.push({
+                    pathname: router.pathname,
+                    query: { ...query, q: undefined, search: undefined },
                 })
             }
         }
     }
 
     useEffect(() => {
-        if (params.search || params.q) {
+        if (query.search || query.q) {
             if (inputRef.current) {
-                inputRef.current.value = params.q || params.search || ""
+                inputRef.current.value = query.q || query.search || ""
             }
         } else {
             if (inputRef.current) {
                 inputRef.current.value = ""
             }
         }
-    }, [params.search, params.q])
+    }, [query.search, query.q])
 
     return (
-        <>
-            <Input
-                placeholder={placeholder || "Qidiruv..."}
-                type="search"
-                className={`${className}`}
-                fullWidth={fullWidth}
-                ref={inputRef}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-            />
-        </>
+        <Input
+            placeholder={placeholder || "Qidiruv..."}
+            type="search"
+            className={`${className}`}
+            fullWidth={fullWidth}
+            ref={inputRef}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+        />
     )
 }
 
